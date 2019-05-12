@@ -1,0 +1,33 @@
+body {
+    padding: 20px;
+}
+
+.left {
+    padding-left: 50px;
+}
+
+.description {
+    font-size: 12px;
+    color: grey;
+}
+
+.blue, .yellow, .red {
+    font-weight: bold;
+    background-color: white !important;
+}
+
+.blue {
+    color: blue;
+}
+
+.yellow {
+    color: #CCCC00;
+}
+
+.red {
+    color: red;
+}
+
+.bold {
+    font-weight: bold;
+}

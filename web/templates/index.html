@@ -1,0 +1,125 @@
+<html>
+<head>
+    <title>Tax calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+
+<form action="/count" method="GET" style="width: 500px; border: 1px solid grey; padding: 20px 50px;">
+    <div class="input-field">
+        {% if provided_salary %}
+            <input id="salary" type="text" name="providedSalary" value="{{ provided_salary }}">
+        {% else %}
+            <input id="salary" type="text" name="providedSalary">
+        {% endif %}
+        <label for="salary">Annual salary</label>
+    </div>
+
+    <div class="input-field">
+        {% if provided_pension %}
+            <input id="pension" type="text" name="providedPension" value="{{ provided_pension }}">
+        {% else %}
+            <input id="pension" type="text" name="providedPension">
+        {% endif %}
+        <label for="pension">Pension in percent e.g. 8</label>
+    </div>
+
+    <label>
+        <input type="checkbox" class="filled-in" {% if show_description %}checked="checked"{% endif %} name="showDescription" />
+        <span>Display calculation method for each deduction</span>
+    </label>
+
+    {% if is_salary_provided %}
+        <button style="margin-top: 50px;" class="btn waves-effect waves-light" type="submit" name="action">Update</button>
+    {% else %}
+        <button style="margin-top: 50px;" class="btn waves-effect waves-light" type="submit" name="action">Calculate</button>
+    {% endif %}
+</form>
+
+{% if result.salary_before_tax %}
+    <table class="highlight">
+        <tr>
+            <th></th>
+            <th>Annual</th>
+            <th>Month</th>
+            <th>Day</th>
+        </tr>
+        <tr>
+            <td>Salary (before deductions){% if show_description %}<div class="description">Basic value used to count deductions.</div><div class="description">Salary based on value which you provided.</div>{% endif %}</td>
+            <td>£{{ result.get_annual_salary_before_tax() }}</td>
+            <td>£{{ result.get_month_salary_before_tax() }}</td>
+            <td>£{{ result.get_day_salary_before_tax() }}</td>
+        </tr>
+        <tr>
+            <td>Tax free allowance{% if show_description %}<div class="description">Value free from all deductions</div>{% endif %}</td>
+            <td>£{{ result.get_annual_tax_free() }}</td>
+            <td>£{{ result.get_month_tax_free() }}</td>
+            <td>£{{ result.get_day_tax_free() }}</td>
+        </tr>
+        <tr>
+            <td>Pension ({{ result.pension_percent }}%){% if show_description %}<div class="description">(<span class="blue">salary</span> - <span class="yellow">tax free allowance</span>) x <span class="bold">{{ result.pension_percent }}%</span></div><div class="description">Percent based on provided value</div>{% endif %}</td>
+            <td>£{{ result.get_annual_pension() }}</td>
+            <td>£{{ result.get_month_pension() }}</td>
+            <td>£{{ result.get_day_pension() }}</td>
+        </tr>
+        <tr>
+            <td>Summary for National Insurance{% if show_description %}<div class="description"><span class="bold">NI 12% + NI 2%</span></div>{% endif %}</td>
+            <td>£{{ result.get_annual_ni_12() + result.get_annual_ni_2() }}</td>
+            <td>£{{ result.get_month_ni_12() + result.get_month_ni_2() }}</td>
+            <td>£{{ result.get_day_ni_12() + result.get_day_ni_2() }}</td>
+        </tr>
+        <tr>
+            <td class="left">National Insurance 12%{% if show_description %}<div class="description">(<span class="blue">salary</span> - <span class="yellow">tax free allowance</span>) x <span class="bold">12%</span></div><div class="description">NI 12% is for money between £166 and £962 per week</div>{% endif %}</td>
+            <td>£{{ result.get_annual_ni_12() }}</td>
+            <td>£{{ result.get_month_ni_12() }}</td>
+            <td>£{{ result.get_day_ni_12() }}</td>
+        </tr>
+        <tr>
+            <td class="left">National Insurance 2%{% if show_description %}<div class="description">(<span class="blue">salary</span> - <span class="yellow">tax free allowance</span>) x <span class="bold">2%</span></div><div class="description">NI 2% is for money above £962 per week</div>{% endif %}</td>
+            <td>£{{ result.get_annual_ni_2() }}</td>
+            <td>£{{ result.get_month_ni_2() }}</td>
+            <td>£{{ result.get_day_ni_2() }}</td>
+        </tr>
+        <tr>
+            <td>Total taxable{% if show_description %}<div class="description"><span class="blue">salary</span> - <span class="yellow">tax free allowance</span> - <span class="red">pension</span></div>{% endif %}</td>
+            <td>£{{ result.get_annual_salary_before_tax() - result.get_annual_tax_free() - result.get_annual_pension() }}</td>
+            <td>£{{ result.get_month_salary_before_tax() - result.get_month_tax_free() - result.get_month_pension() }}</td>
+            <td>£{{ result.get_day_salary_before_tax() - result.get_day_tax_free() - result.get_day_pension() }}</td>
+        </tr>
+        <tr>
+            <td>Summary for taxes{% if show_description %}<div class="description"><span class="bold">tax 20% + tax 40% + tax 45%</span></div>{% endif %}</td>
+            <td>£{{ result.get_annual_tax_20() + result.get_annual_tax_40() + result.get_annual_tax_45()}}</td>
+            <td>£{{ result.get_month_tax_20() + result.get_month_tax_40() + result.get_month_tax_45()}}</td>
+            <td>£{{ result.get_day_tax_20() + result.get_day_tax_40() + result.get_day_tax_45()}}</td>
+        </tr>
+        <tr>
+            <td class="left">Tax 20%{% if show_description %}<div class="description">(<span class="blue">salary</span> - {{ calculation_manager.TAX_20_MIN }} - <span class="yellow">tax free allowance</span> - <span class="red">pension</span>) x <span class="bold">20%</span></div><div class="description">Tax 20% is for money between £{{ calculation_manager.TAX_20_MIN }} (tax free allowance) and £{{ calculation_manager.TAX_40_MIN }} (end of first band) from the salary</div>{% endif %}</td>
+            <td>£{{ result.get_annual_tax_20() }}</td>
+            <td>£{{ result.get_month_tax_20() }}</td>
+            <td>£{{ result.get_day_tax_20() }}</td>
+        </tr>
+        <tr>
+            <td class="left">Tax 40%{% if show_description %}<div class="description">(<span class="blue">salary</span> - {{ calculation_manager.TAX_40_MIN }} - <span class="yellow">tax free allowance</span> - <span class="red">pension</span>) x <span class="bold">40%</span></div><div class="description">Tax 40% is for money between £{{ calculation_manager.TAX_40_MIN }} (end of first band) and £{{ calculation_manager.TAX_45_MIN }} (end of second band) from the salary</div>{% endif %}</td>
+            <td>£{{ result.get_annual_tax_40() }}</td>
+            <td>£{{ result.get_month_tax_40() }}</td>
+            <td>£{{ result.get_day_tax_40() }}</td>
+        </tr>
+        <tr>
+            <td class="left">Tax 45%{% if show_description %}<div class="description">(<span class="blue">salary</span> - {{ calculation_manager.TAX_45_MIN }} - <span class="yellow">tax free allowance</span> - <span class="red">pension</span>) x <span class="bold">45%</span></div><div class="description">Tax 45% is for money above £{{ calculation_manager.TAX_45_MIN }} (end of second band) from the salary</div>{% endif %}</td>
+            <td>£{{ result.get_annual_tax_45() }}</td>
+            <td>£{{ result.get_month_tax_45() }}</td>
+            <td>£{{ result.get_day_tax_45() }}</td>
+        </tr>
+        <tr>
+            <td>Salary (after deductions){% if show_description %}<div class="description"><span class="blue">salary</span> - <span class="red">pension</span> - <span class="yellow">tax free allowance</span> - <span class="bold">taxes</span></div>{% endif %}</td>
+            <td>£{{ result.get_annual_salary_after_tax() }}</td>
+            <td>£{{ result.get_month_salary_after_tax() }}</td>
+            <td>£{{ result.get_day_salary_after_tax() }}</td>
+        </tr>
+    </table>
+{% endif %}
+
+</body>
+</html>
