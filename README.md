@@ -9,15 +9,15 @@ Web application to count taxes in UK (2019/2020 current configuration) based on 
 ## How to run
 
 Set environment variable:
-######FLASK_APP=Main.py
+###### `FLASK_APP=Main.py`
 If you would like to dynamically load changes, you should also set below variable:
-######FLASK_DEBUG=1
+###### `FLASK_DEBUG=1`
 
 Run:
-######flask run
+###### `flask run`
 
 Go to the below URL:
-######localhost:5000
+###### localhost:5000
 
 # Additional links
 Basic tutorial for Flask:
