@@ -1,0 +1,12 @@
+# Configuration 2019
+
+# All below values should be annual
+tax_free_allocate=12500
+tax_20_percent_minimum_range=12500
+tax_20_percent_maximum_range=49999
+tax_40_percent_minimum_range=50000
+tax_40_percent_maximum_range=149999
+tax_45_percent_minimum_range=150000
+# £166 per week x 52 weeks
+national_insurance_12_percent_minimum_range=8632
+national_insurance_2_percent_minimum_range=50000

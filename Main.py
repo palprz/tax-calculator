@@ -11,6 +11,7 @@ app = Flask(__name__,
 def redirection():
     return redirect(url_for('tax_calculator'))
 
+
 @app.route("/count", methods=['GET'])
 def tax_calculator():
     provided_salary = request.args.get('providedSalary')
@@ -46,6 +47,7 @@ def tax_calculator():
                            provided_pension=provided_pension,
                            calculation_manager=CalculationManager,
                            show_description=show_description)
+
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1')

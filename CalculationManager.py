@@ -1,64 +1,56 @@
 from Result import Result
+from TaxConfig import TaxConfig
 
 
 class CalculationManager:
 
-    # Constant values
     PENSION = 0
 
-    TAX_FREE = 12500
-    TAX_20_MIN = 12500
-    TAX_20_MAX = 49999
-    TAX_40_MIN = 50000
-    TAX_40_MAX = 149999
-    TAX_45_MIN = 150000
-
-    YEAR_NI_12 = 8632 #166 per week
-    YEAR_NI_2 = 50000 #Wrong: 962 per week
+    tax_config = TaxConfig()
 
     def __init__(self, provided_salary, provided_pension):
         self.salary_before_taxes = float(provided_salary)
-        self.pension = float(provided_pension)
+        self.PENSION = float(provided_pension)
         self.result = Result()
         self.result.salary_before_tax = float(provided_salary)
         self.result.pension_percent = float(provided_pension)
-        self.result.tax_free = self.TAX_FREE
+        self.result.tax_free = self.tax_config.get_tax_free()
 
     def get_result(self):
         return self.result
 
     def count_tax_20(self):
-        if self.salary_before_taxes > (self.TAX_20_MIN + self.PENSION):
-            if self.salary_before_taxes > (self.TAX_20_MAX + self.PENSION):
-                salary_above = (self.TAX_20_MAX + self.PENSION) - (self.TAX_20_MIN + self.PENSION)
+        if self.salary_before_taxes > (self.tax_config.get_tax_20_min() + self.PENSION):
+            if self.salary_before_taxes > (self.tax_config.get_tax_20_max() + self.PENSION):
+                salary_above = (self.tax_config.get_tax_20_max() + self.PENSION) - (self.tax_config.get_tax_20_min() + self.PENSION)
             else:
-                salary_above = self.salary_before_taxes - (self.TAX_20_MIN + self.PENSION)
+                salary_above = self.salary_before_taxes - (self.tax_config.get_tax_20_min() + self.PENSION)
             self.result.tax_20_pay = round(salary_above * float(0.20), 2)
 
     def count_tax_40(self):
-        if self.salary_before_taxes > (self.TAX_40_MIN + self.PENSION):
-            if self.salary_before_taxes > (self.TAX_40_MAX + self.PENSION):
-                salary_above = (self.TAX_40_MAX + self.PENSION) - (self.TAX_40_MIN + self.PENSION)
+        if self.salary_before_taxes > (self.tax_config.get_tax_40_min() + self.PENSION):
+            if self.salary_before_taxes > (self.tax_config.get_tax_40_max() + self.PENSION):
+                salary_above = (self.tax_config.get_tax_40_max() + self.PENSION) - (self.tax_config.get_tax_40_min() + self.PENSION)
             else:
-                salary_above = self.salary_before_taxes - (self.TAX_40_MIN + self.PENSION)
+                salary_above = self.salary_before_taxes - (self.tax_config.get_tax_40_min() + self.PENSION)
             self.result.tax_40_pay = round(salary_above * float(0.40), 2)
 
     def count_tax_45(self):
-        if self.salary_before_taxes > (self.TAX_45_MIN + self.PENSION):
-            salary_above = self.salary_before_taxes - (self.TAX_45_MIN + self.PENSION)
+        if self.salary_before_taxes > (self.tax_config.get_tax_45_min() + self.PENSION):
+            salary_above = self.salary_before_taxes - (self.tax_config.get_tax_45_min() + self.PENSION)
             self.result.tax_45_pay = round(salary_above * float(0.45), 2)
 
     def count_ni_12(self):
-        if self.salary_before_taxes > self.YEAR_NI_12:
-            if self.salary_before_taxes > self.YEAR_NI_2:
-                salary_above = self.YEAR_NI_2 - self.YEAR_NI_12
+        if self.salary_before_taxes > self.tax_config.get_year_ni_12():
+            if self.salary_before_taxes > self.tax_config.get_year_ni_2():
+                salary_above = self.tax_config.get_year_ni_2() - self.tax_config.get_year_ni_12()
             else:
-                salary_above = self.salary_before_taxes - self.YEAR_NI_12
+                salary_above = self.salary_before_taxes - self.tax_config.get_year_ni_12()
             self.result.ni_12_pay = round(salary_above * float(0.12), 2)
 
     def count_ni_2(self):
-        if self.salary_before_taxes > self.YEAR_NI_2:
-            salary_above = self.salary_before_taxes - self.YEAR_NI_2
+        if self.salary_before_taxes > self.tax_config.get_year_ni_2():
+            salary_above = self.salary_before_taxes - self.tax_config.get_year_ni_2()
             self.result.ni_2_pay = round(salary_above * float(0.02), 2)
 
     def count_pension(self):
