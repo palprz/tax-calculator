@@ -1,5 +1,4 @@
 from flask import Flask, url_for, render_template, request, abort, redirect
-from decimal import Decimal
 from CalculationManager import CalculationManager
 
 app = Flask(__name__,

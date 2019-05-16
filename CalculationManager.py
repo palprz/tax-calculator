@@ -1,4 +1,3 @@
-from decimal import Decimal
 from Result import Result
 
 
@@ -14,15 +13,15 @@ class CalculationManager:
     TAX_40_MAX = 149999
     TAX_45_MIN = 150000
 
-    YEAR_NI_12 = 8632 # £166 per week
-    YEAR_NI_2 = 50000 # Wrong: £962 per week
+    YEAR_NI_12 = 8632 #166 per week
+    YEAR_NI_2 = 50000 #Wrong: 962 per week
 
     def __init__(self, provided_salary, provided_pension):
-        self.salary_before_taxes = Decimal(provided_salary)
-        self.pension = Decimal(provided_pension)
+        self.salary_before_taxes = float(provided_salary)
+        self.pension = float(provided_pension)
         self.result = Result()
-        self.result.salary_before_tax = Decimal(provided_salary)
-        self.result.pension_percent = Decimal(provided_pension)
+        self.result.salary_before_tax = float(provided_salary)
+        self.result.pension_percent = float(provided_pension)
         self.result.tax_free = self.TAX_FREE
 
     def get_result(self):
@@ -34,7 +33,7 @@ class CalculationManager:
                 salary_above = (self.TAX_20_MAX + self.PENSION) - (self.TAX_20_MIN + self.PENSION)
             else:
                 salary_above = self.salary_before_taxes - (self.TAX_20_MIN + self.PENSION)
-            self.result.tax_20_pay = round(salary_above * Decimal(0.20), 2)
+            self.result.tax_20_pay = round(salary_above * float(0.20), 2)
 
     def count_tax_40(self):
         if self.salary_before_taxes > (self.TAX_40_MIN + self.PENSION):
@@ -42,12 +41,12 @@ class CalculationManager:
                 salary_above = (self.TAX_40_MAX + self.PENSION) - (self.TAX_40_MIN + self.PENSION)
             else:
                 salary_above = self.salary_before_taxes - (self.TAX_40_MIN + self.PENSION)
-            self.result.tax_40_pay = round(salary_above * Decimal(0.40), 2)
+            self.result.tax_40_pay = round(salary_above * float(0.40), 2)
 
     def count_tax_45(self):
         if self.salary_before_taxes > (self.TAX_45_MIN + self.PENSION):
             salary_above = self.salary_before_taxes - (self.TAX_45_MIN + self.PENSION)
-            self.result.tax_45_pay = round(salary_above * Decimal(0.45), 2)
+            self.result.tax_45_pay = round(salary_above * float(0.45), 2)
 
     def count_ni_12(self):
         if self.salary_before_taxes > self.YEAR_NI_12:
@@ -55,12 +54,12 @@ class CalculationManager:
                 salary_above = self.YEAR_NI_2 - self.YEAR_NI_12
             else:
                 salary_above = self.salary_before_taxes - self.YEAR_NI_12
-            self.result.ni_12_pay = round(salary_above * Decimal(0.12), 2)
+            self.result.ni_12_pay = round(salary_above * float(0.12), 2)
 
     def count_ni_2(self):
         if self.salary_before_taxes > self.YEAR_NI_2:
             salary_above = self.salary_before_taxes - self.YEAR_NI_2
-            self.result.ni_2_pay = round(salary_above * Decimal(0.02), 2)
+            self.result.ni_2_pay = round(salary_above * float(0.02), 2)
 
     def count_pension(self):
         if self.result.pension_percent != 0:
