@@ -31,7 +31,7 @@ def tax_calculator():
     except ValueError:
         provided_pension = 0
 
-    calculation_manager = CalculationManager(provided_salary, provided_pension)
+    calculation_manager = CalculationManager(float(provided_salary), float(provided_pension))
     calculation_manager.count_pension()
     calculation_manager.count_tax_20()
     calculation_manager.count_tax_40()

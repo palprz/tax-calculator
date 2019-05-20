@@ -9,11 +9,11 @@ class CalculationManager:
     tax_config = TaxConfig()
 
     def __init__(self, provided_salary, provided_pension):
-        self.salary_before_taxes = float(provided_salary)
-        self.PENSION = float(provided_pension)
+        self.salary_before_taxes = provided_salary
+        self.PENSION = provided_pension
         self.result = Result()
-        self.result.salary_before_tax = float(provided_salary)
-        self.result.pension_percent = float(provided_pension)
+        self.result.salary_before_tax = provided_salary
+        self.result.pension_percent = provided_pension
         self.result.tax_free = self.tax_config.get_tax_free()
 
     def get_result(self):

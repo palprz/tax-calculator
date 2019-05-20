@@ -40,7 +40,3 @@ national_insurance_2_percent_minimum_range=50000
 # Additional links
 Basic tutorial for Flask:
 https://pythonspot.com/flask-web-forms/
-
-TODO:
-- configuration file
-- possible to pick up a different tax year

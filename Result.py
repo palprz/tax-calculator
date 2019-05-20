@@ -1,4 +1,3 @@
-from decimal import Decimal
 
 
 class Result:
@@ -16,14 +15,14 @@ class Result:
         self.pension = 0
 
     def get_annual(self, value):
-        return round(Decimal(value), 2)
+        return round(value, 2)
 
     def get_month(self, value):
-        return round(Decimal(value / 12), 2)
+        return round(value / 12, 2)
 
     # Count based on 5 working days and 52 weeks in a year.
     def get_day(self, value):
-        return round(Decimal(value / (52 * 5)), 2)
+        return round(value / (52 * 5), 2)
 
     # TAX FREE
     def get_annual_tax_free(self):
