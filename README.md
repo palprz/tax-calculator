@@ -1,9 +1,15 @@
 # Tax calculator
 
-Web application to count taxes in UK (2019/2020 current configuration) based on https://listentotaxman.com/
+Web application to count taxes in UK (with default configuration for 2019/2020 year). Application is based on https://listentotaxman.com/
 
-## Link to demo of application
-https://tax-calculator-palprz.herokuapp.com
+## Screenshots from running app
+
+Calculated taxes:
+![Screnshot from running application with calculated taxes example][screenshots/calculated_taxes]
+
+
+Calculated taxes with explanation how it has been calculated (doesn't contain all details):
+![Screnshot from running application with calculated taxes with explanation how it has been calculated example][screenshots/calculated_taxes_explained]
 
 ## Technologies:
 - Python
@@ -11,15 +17,15 @@ https://tax-calculator-palprz.herokuapp.com
 
 ## How to run
 Set environment variable:
-###### `FLASK_APP=Main.py`
-If you would like to dynamically load changes, you should also set below variable:
-###### `FLASK_DEBUG=1`
+###### `export FLASK_APP=Main.py`
+(optional) To dynamically load changes you should also set below variable:
+###### `export FLASK_DEBUG=1`
 
 Run:
 ###### `flask run`
 
 Go to the below URL:
-###### `localhost:5000`
+###### `127.0.0.1:5000`
 
 # Configuration file
 `configuration.txt` file contains values for tax/National Insurance bands. You should provide necessary details for the current tax year to be sure that application will count properly. Example of the configuration file you can find below:
