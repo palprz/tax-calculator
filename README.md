@@ -5,11 +5,11 @@ Web application to count taxes in UK (with default configuration for 2019/2020 y
 ## Screenshots from running app
 
 Calculated taxes:
-![Screnshot from running application with calculated taxes example][screenshots/calculated_taxes]
+![Screnshot from running application with calculated taxes example][calculated_taxes]
 
 
 Calculated taxes with explanation how it has been calculated (doesn't contain all details):
-![Screnshot from running application with calculated taxes with explanation how it has been calculated example][screenshots/calculated_taxes_explained]
+![Screnshot from running application with calculated taxes with explanation how it has been calculated example][calculated_taxes_explained]
 
 ## Technologies:
 - Python
@@ -46,3 +46,6 @@ national_insurance_2_percent_minimum_range=50000
 # Additional links
 Basic tutorial for Flask:
 https://pythonspot.com/flask-web-forms/
+
+[calculated_taxes]: https://github.com/palprz/tax-calculator/blob/master/screenshots/calculated_taxes.png
+[calculated_taxes_explained]: https://github.com/palprz/tax-calculator/blob/master/screenshots/calculated_taxes_explained.png
