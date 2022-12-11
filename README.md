@@ -1,4 +1,4 @@
-# Tax calculator [May 2019]
+# Tax calculator
 
 Web application to count taxes in UK (2019/2020 current configuration) based on https://listentotaxman.com/
 
